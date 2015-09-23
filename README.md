@@ -14,7 +14,7 @@ Make sure you have python installed on your machine. Minimum version tested is 2
 
 1. Get template zip file and unzip it. It should contain a template folder and a mp3 file.
 
-2. Copy make.py, publish.py and index.html to the template folder.
+2. Copy **make.py**, **publish.py** and **index.html** to the template folder.
 
 3. Run `python/python3 make.py -n/--name [template_name]`.
 
@@ -25,3 +25,5 @@ Make sure you have python installed on your machine. Minimum version tested is 2
 6. Run `python/python3 publish.py --test` for testing.
 
 7. Run `python/python3 publish.py --production` for release.
+
+8. Delete **publish.py** from the published template folder.
