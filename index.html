@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="utf-8">
+  <title rn-text="content.activityName"></title>
+  <meta name="description" content="{{content.activityDesc}}">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <link rel="stylesheet" href="/template/assets/css/common-tmpl.css">
+</head>
+<body>
+  <div class="wx-share-overlay" style="display: none;"></div>
+  <div class="music" id="music">
+    <i class="icon icon-play"></i>
+    <audio id="player" src="" autoplay loop></audio>
+  </div>
+  
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <iframe src="page1/index.html" width="100%" height="100%" frameborder="0"></iframe>
+        <span class="icon-swipetop"></span>
+      </div>
+
+      <!-- 最后一页 overflow-y: auto; 启用滚动模式 -->
+      <div class="swiper-slide swiper-no-swiping">
+        <div class="info" style="background-image: url(thumb-bg.jpg)">
+          <div class="title">
+            <i class="icon icon-lt"></i>
+            <i class="icon icon-br"></i>
+            <dl>
+              <dt>{{content.activityName}}</dt>
+              <dd>{{content.activityDesc}}</dd>
+            </dl>
+          </div>
+          <h3>{{content.storeName}}</h3>
+        </div>
+
+        <div class="intro">
+          <pre>{{content.activityContent}}</pre>
+          <br>
+          <pre>截图或点击右上角收藏本页, 到店出示即可享受优惠</pre>
+        </div>
+
+        <div class="logo">
+          <img rn-attr="src: img(content.storeLogo, '150w_80Q')" style="{{show(content.storeLogo)}}">
+        </div>
+
+        <div style="text-align: center; {{show(userId == content.userId)}}">
+          <a class="btn btn-default" href="/template/edit.html?id={{content._id}}&source=meijia">重新编辑活动信息</a>
+          <button class="btn btn-default delete" style="margin-left: 2em;">删除此活动</button>
+        </div>
+
+        <div style="margin: 8px 0; text-align: center">
+          <button class="btn btn-success publish wx-share" style="{{show(content.status == 'draft')}}">保存并分享</button>
+          <button class="btn btn-success wx-share" style="{{show(content.status == 'publish')}}">分享到朋友圈</button>
+        </div>
+
+        <!--
+        <div class="yx">
+          <p>商户其他优惠活动</p>
+          <ul style="list-style: none; padding: 0 8px;">
+            <li rn-foreach="otherActivities" style="margin-bottom: 8px">
+              <a href="/template/201504/{{template}}/?id={{_id}}" style="margin: 0 auto; padding: 8px;color:#337ab7; text-align: left; display: block; width: 260px; height: 120px; background-size: cover;" rn-prop="style.backgroundImage: 'url(/img/women/' + template + '-bg.jpg)'">
+                <div style="font-weight: bold;">{{activityName}}</div>
+                <div>{{activityDesc}}</div>
+              </a>
+            </li>
+          </ul>
+          <i class="icon icon-38"></i>
+        </div>
+        -->
+
+        <div class="operate" style="{{show(!query.source)}}">
+          <a href="/template/" class="btn">制作我的营销活动</a>
+          <a href="http://www.wosai.cn/" target="_blank" class="wosai"><i class="icon icon-wosai"></i></a>
+        </div>
+
+        <div class="operate" style="{{show(query.source == 'meijia')}}">
+          <a href="http://mp.weixin.qq.com/s?__biz=MzAxNzE5MDg5NA==&mid=207409336&idx=1&sn=e2cd520d7fc412731f256b722b86d224&scene=0#rd" class="btn">制作我的营销活动</a>
+          <a href="http://mp.weixin.qq.com/s?__biz=MzAxNzE5MDg5NA==&mid=204554008&idx=1&sn=f1e1203c196c370a3bf80b983c305ec0&key=1936e2bc22c2ceb5c63595063d87287fad4198746f5d31313554019db92c82f9e5b4cb929b19841491fac2b92460944e&ascene=0&uin=MjEyMTQ3MzgwOA%3D%3D&devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.10.3+build(14D136)&version=11020012&pass_ticket=trawyrGGxZgngYIuzUUVK%2ByavehUoB7CEcfEqZVQsANeZeiE6%2Bp0Gr8g8d0PI1xw" target="_blank" class="wosai">
+            <img src="http://yx.wosai.cn/img/meijia@2x.png" width="48"><br>
+            <span style="color: #999">@美甲圈那些事儿</span><br>
+            <span style="font-size: smaller">我们为美甲商户提供最简单最好玩的营销工具</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/template/assets/js/jweixin-1.0.0.js"></script>
+  <script src="/template/assets/js/jquery.min.js"></script>
+  <script src="/template/assets/js/swiper.jquery.min.js"></script>
+  <script src="/template/assets/js/render.js"></script>
+  <script src="/template/assets/js/request.js"></script>
+  <script src="/template/assets/js/Url.js"></script>
+  <script src="/template/assets/js/handleError.js"></script>
+  <script src="/template/assets/js/loader.js"></script>
+  <script src="/template/assets/js/show.js"></script>
+
+  <script>
+    var mySwiper = new Swiper('.swiper-container', {
+      direction: 'vertical',
+      noSwiping: true,
+      noSwipingClass: 'swiper-no-swiping'
+    });
+
+    var music = document.getElementById('music');
+    var player = document.getElementById('player');
+    $('html').one('touchstart', function() {
+      player.play();
+    });
+    
+    music.addEventListener('click', function() {
+      if (this.className.match(/(?:^|\s)stop(?!\S)/)) {
+        player.play();
+        this.className = "music";
+      } else {
+        this.className = this.className + " stop";
+        player.pause();
+      }
+    }, false);
+
+    window.addEventListener('beforeunload', function() {
+      player.pause();
+    }, false);
+  </script>
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?dd1e5cd81911d2ebaf82e674cb19f04e";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+</body>
+</html>
+
+
